@@ -1,0 +1,24 @@
+spring:
+  datasource:
+#   MVCC=TRUE 그나마 여러개가 접근했을때 한번에 처리 넣는것을 권장
+    #주의: H2 데이터베이스의 MVCC 옵션은 H2 1.4.198 버전부터 제거되었습니다.
+    #1.4.200 버전에서는 MVCC 옵션을 사용하면 오류가 발생합니다.
+    url: jdbc:h2:tcp://localhost/~/jpashop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  # 이렇게까지만 해도 hikariCP를 써서 커넥션 풀이랑 이런게 다 스프링부트가 세팅을 다 걸어줌
+
+  jpa:
+    hibernate:
+      ddl-auto: create  #자동으로 테이블을 만들어줌. application 실행시점에 내가 가지고 있는 entity정보를 지우고 다시 생성
+    properties:
+      hibernate:
+        # show_sql: true
+        format_sql: true
+        #이런 속성들은 spring boot 공홈에서 찾아서 공부해야한다.
+
+#로그레벨
+logging.level:
+  org.hibernate.SQL: debug #jpa나 hibernate가 생성하는 sql로그를 디버그 모드로 쓰겠다.
+  org.hibernate.type: trace
