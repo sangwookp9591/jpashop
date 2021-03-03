@@ -1,6 +1,7 @@
 package jpabook.jpashop;
 //Repository 엔티티 같은것을 찾아주는것 -> DAO와 비슷한 역할
 
+import jpabook.jpashop.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
