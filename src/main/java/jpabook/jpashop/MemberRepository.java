@@ -13,7 +13,9 @@ public class MemberRepository {
     //Spring boot가 어노테이션 위에 있으면 EntityManager를 주입해준다.
     //spring-boot-starter-data-jpa를 등록하면서 EntityManager 생성하는게 자동으로 들어간다.
     //yml의 jpa설정파일을 다 읽어서 EntityManagerFactory같은 코드가 다 만들어 져버린다. 우리는 사용만 하면된다.
+
     @PersistenceContext
+    //스프링 부트라서  @Autowired가 사용가능 하다.
     private EntityManager em;
 
     public Long save(Member member){ //shift+ctrl+t
