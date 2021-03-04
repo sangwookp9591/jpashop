@@ -1,6 +1,7 @@
 package jpabook.jpashop.domain.item;
 
 import jpabook.jpashop.domain.Category;
+import jpabook.jpashop.exception.NotEnoughStockException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) //한테이블에 다때려박는것
 @DiscriminatorColumn(name ="dtype")
 public abstract class Item {
+
     @Id @GeneratedValue
     @Column(name ="item_id")
     private Long id;
@@ -29,8 +31,33 @@ public abstract class Item {
     private int price;
 
     private int stockQuantity;
+    //변경할 일이 있으면 setter로 변경하는 것이 아니라 아래와같이 핵심 비지니스 로직으로 변경해야 한다.
+    // ->이게 가장 객체지향적인 것이다.
 
     @ManyToMany(mappedBy = "items")
     private List<Category> categories = new ArrayList<>();
+
+    //===비지니스 로즥===//
+    //재고를 줄이고 늘리는 로직
+    // 엔티티 자체가 해결할 수 있는 것은 주로 엔티티 안에 비지니스 로직을 넣는게 좋다 -> 이게 객체지향적
+    //즉 데이터를 가지고 있는 쪽에 핵심 비지니스 로직이 있는 것이 좋다.
+
+    /*
+    * stock 증가
+    * */
+    public void addStock(int quantity){
+        this.stockQuantity += quantity;
+    }
+
+    /*
+     * stock 감소
+     * */
+    public void remvoeStoc(int quantity){
+        int restStock = this.stockQuantity - quantity;
+        if(restStock < 0){
+            throw new NotEnoughStockException("need more stock");
+        }
+        this.stockQuantity = restStock;
+    }
 
 }
