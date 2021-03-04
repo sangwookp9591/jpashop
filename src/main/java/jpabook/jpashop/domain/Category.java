@@ -29,7 +29,6 @@ public class Category {
     //실전에서 쓰지 못하는 경우는 딱 저그림밖에 안됨. 더이상 추가가 안된다.
     private List<Item> items = new ArrayList<>();
 
-
     //카테고리 구조가 계층구조로 쭉내려가기때문에 위로도 볼수 있어야하고 아래도 볼수 있어야함.
     //같은 엔티티에 대해 셀프로 양방향 연관관계를 한것이다.
     @ManyToOne(fetch = FetchType.LAZY)
