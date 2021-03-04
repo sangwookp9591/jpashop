@@ -2,6 +2,7 @@ package jpabook.jpashop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -79,6 +80,63 @@ public class Order {
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
         delivery.setOrder(this);
+    }
+
+    //====생성 메서드====//
+
+    // 밖에서 set하는 방식이아니라 생성할때부터 값을 넣어 생성 메서드에서 주문에대한 복잡한 비지니스 로직을 완결시킴
+    public static Order createOrder(Member member,Delivery delivery, OrderItem... orderItems){
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for (OrderItem orderItem : orderItems){
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+
+        return order;
+    }
+
+
+
+    //===비지니스 로직 ====/
+
+    /*
+    주문 취소
+    *
+     */
+    public void cancel(){
+        if(delivery.getStatus() == DeliveryStatus.COMP){ //상태가 배송완료이면 주문을 못하다.
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+        }
+
+        this.setStatus(OrderStatus.CANCEL); //validation 통과하면 order의 상태를 cancel로 변경
+
+        //this.orderItems 으로 써야하지만 여기선 색깔을 표시해주기도하고 this는 이름이 똑같을 때랑 강조할때만 쓴다.
+        for(OrderItem orderItem : orderItems){//루프를 돌면서 orderItem에대해 cancel을 하면
+            orderItem.cancel(); //재고 증가
+        }
+    }
+
+
+
+
+    //====조회 로직 ===// 계산이 필요할 경우
+
+    /*
+    * 전체 주문 가격 조회
+    * */
+    public int getTotalPrice(){
+//      int totalPrice = 0;
+//        for (OrderItem orderItem : orderItems){
+//            totalPrice += orderItem.getTotalPrice(); //가격 * 수량
+//        }
+        //람다식으로 변환 alt+enter
+        int totalPrice = orderItems.stream()
+                .mapToInt(OrderItem::getTotalPrice)
+                .sum();
+        return totalPrice;
     }
 
 }
