@@ -54,7 +54,11 @@ public abstract class Item {
      * */
     public void removeStock(int quantity){
         int restStock = this.stockQuantity - quantity;
+        System.out.println(" this.stockQuantity = " +  this.stockQuantity);
+        System.out.println("quantity = " + quantity);
+        System.out.println("restStock = " + restStock);
         if(restStock < 0){
+            System.out.println("restStock = " + restStock);
             throw new NotEnoughStockException("need more stock");
         }
         this.stockQuantity = restStock;
