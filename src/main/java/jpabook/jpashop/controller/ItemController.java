@@ -78,15 +78,20 @@ public class ItemController {
     @PostMapping("items/{itemId}/edit") //itemId가 사용자가 임으로 조작할 수있기때문에 서비스단에서 이유저가 아아이탬에 접근해되되는지 권한 로직이 필요하다.
     public String updateItem(@PathVariable("itemId") Long itemId,@ModelAttribute("form") BookForm form){ //@ModelAttribute("form") <form th:object="${form}" method="post">
 
-        Book book = new Book();
-        book.setId(form.getId());
-        book.setName(form.getName());
-        book.setPrice(form.getPrice());
-        book.setStockQuantity(form.getStockQuantity());
-        book.setAuthor(form.getAuthor());
-        book.setIsbn(form.getIsbn());
+//        Book book = new Book();
+//        book.setId(form.getId());
+//        book.setName(form.getName());
+//        book.setPrice(form.getPrice());
+//        book.setStockQuantity(form.getStockQuantity());
+//        book.setAuthor(form.getAuthor());
+//        book.setIsbn(form.getIsbn());
+//
+//        itemService.saveItem(book);
+//        return "redirect:items";
 
-        itemService.saveItem(book);
+
+        //위에 것보다 더나은 설계
+        itemService.updateItem(itemId,form.getName(), form.getPrice(), form.getStockQuantity());
         return "redirect:items";
 
     }

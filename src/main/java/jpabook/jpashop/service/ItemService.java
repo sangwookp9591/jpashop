@@ -24,7 +24,7 @@ public class ItemService {
 
 
     @Transactional
-    public void updateItem(Long itemId ,Book bookParam){//itemParam: 파리미터로 넘어온 준영속 상태의 엔티티
+    public void updateItem(Long itemId ,String name, int price, int stockQuantity){//itemParam: 파리미터로 넘어온 준영속 상태의 엔티티
         //1. 변경감지지
        //이렇게 해야한다 이게 더나은 방법이다.
 
@@ -34,9 +34,12 @@ public class ItemService {
 
         //데이터를 수정한다.
         //trascntional에 의해서 커밋이되고 flush가 나간다.
-        findItem.setPrice(bookParam.getPrice());
-        findItem.setName(bookParam.getName());
-        findItem.setStockQuantity(bookParam.getStockQuantity());
+        findItem.setPrice(price);
+        findItem.setName(name);
+        findItem.setStockQuantity(stockQuantity);
+        //남발하면안된다.
+        //findItm.chage() 같은것을 만들어서ㅏ용해야한다.
+
     }
 
     public List<Item> findItems(){
