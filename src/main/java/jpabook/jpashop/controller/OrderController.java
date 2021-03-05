@@ -1,6 +1,8 @@
 package jpabook.jpashop.controller;
 
+import jpabook.jpashop.Repository.OrderSearch;
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.service.ItemService;
 import jpabook.jpashop.service.MemberService;
@@ -9,9 +11,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,11 +56,23 @@ public class OrderController {
         //영속상태를 유지할 수 있기때문에 주문하면서 뭔가 수정되더라도 변경감지를 적용가능 밖에서 가지고오면 더티체킹 자체가 안됨
         //트랜잭션없이 밖에서 들고온거기때문에.
         return "redirect:/orders";
-
-
-
-
-
     }
+    @GetMapping("/orders")
+    public String orderList(@ModelAttribute("orderSearch")OrderSearch orderSearch,Model model){
+        //@ModelAttribute("orderSearch")
+        //굳이 ordereSearch에 담지않아도 알아서 담긴다.
+        //form submit이된다 즉 model.addAttribute("orderSearch",orderSearch);에 담기는 것이다.
+        List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders",orders);
+        return "order/orderList";
+    }
+
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public String cancelOrder(@PathVariable("orderId") Long orderId){
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
+    }
+
 
 }

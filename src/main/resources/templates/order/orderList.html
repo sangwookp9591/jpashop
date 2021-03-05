@@ -6,7 +6,9 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div>
         <div>
+
             <form th:object="${orderSearch}" class="form-inline">
+
                 <div class="form-group mb-2">
                     <input type="text" th:field="*{memberName}" class="formcontrol" placeholder="회원명"/>
                 </div>
@@ -21,7 +23,9 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary mb-2">검색</button>
+
             </form>
+
         </div>
         <table class="table table-striped">
             <thead>
@@ -46,9 +50,7 @@
                 <td th:text="${item.status}"></td>
                 <td th:text="${item.orderDate}"></td>
                 <td>
-                    <a th:if="${item.status.name() == 'ORDER'}" href="#"
-                       th:href="'javascript:cancel('+${item.id}+')'"
-                       class="btn btn-danger">CANCEL</a>
+                    <a th:if="${item.status.name() == 'ORDER'}" href="#" th:href="'javascript:cancel('+${item.id}+')'" class="btn btn-danger">CANCEL</a>
                 </td>
             </tr>
             </tbody>
