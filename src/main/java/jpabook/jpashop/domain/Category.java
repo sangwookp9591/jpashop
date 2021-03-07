@@ -31,6 +31,7 @@ public class Category {
 
     //카테고리 구조가 계층구조로 쭉내려가기때문에 위로도 볼수 있어야하고 아래도 볼수 있어야함.
     //같은 엔티티에 대해 셀프로 양방향 연관관계를 한것이다.
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name= "parent_id")
     private Category parent;
