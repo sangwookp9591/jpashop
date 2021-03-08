@@ -42,7 +42,8 @@ public class MemberApiController {
 
         memberService.update(id,request.getName());//update 후 트랜잭션 끝남 (command  단)
         Member findMember = memberService.findOne(id);//정상적으로 잘 반영됫는지 쿼리를해서 가져옴(쿼리 단)
-        return new UpdateMemberResponse(findMember.getId(), findMember.getName()); //Response DTO를
+        return new UpdateMemberResponse(findMember.getId(), findMember.getName()); //Response DTO를 통해 반환
+
     }
 
     @Data
