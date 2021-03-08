@@ -14,7 +14,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create  #자동으로 테이블을 만들어줌. application 실행시점에 내가 가지고 있는 entity정보를 지우고 다시 생성
+      ddl-auto: none  #자동으로 테이블을 만들어줌. application 실행시점에 내가 가지고 있는 entity정보를 지우고 다시 생성
     properties:
       hibernate:
         # show_sql: true
