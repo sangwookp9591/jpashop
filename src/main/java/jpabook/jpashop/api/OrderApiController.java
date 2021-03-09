@@ -74,6 +74,7 @@ public class OrderApiController {
 
 
     }
+
     @Getter // 자바에서 properties가 없다고 하는 에러가나오면 거의 getter setter 이다.
     static class OrderDto {
 

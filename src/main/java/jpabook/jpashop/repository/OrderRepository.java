@@ -124,7 +124,11 @@ public class OrderRepository {
 
 
     public List<Order> findAllWithItem() {
-        //ㅇㅇ
+        return em.createQuery("select o from order o " +
+                "join fetch o.meber m " +
+                "join fetch o.deivery d " +
+                "join fetch o.orderItems oi " +
+                "join fetch oi.item i",Order.class).getResultList();
 
     }
 }
