@@ -13,9 +13,11 @@ public class JpashopApplication {
 	}
 	@Bean
 	Hibernate5Module hibernate5Module() {
+		/*lazy로딩을 호출해서 정상적으로 proxy초기화 된 애들만 반영이된다.*/
 		Hibernate5Module hibernate5Module = new Hibernate5Module();
 		//모듈만 하게될경우에는 lazy로 설정된것은 다 null로 리턴
 		//모듈 자체는 필요할수 있지만 엔티티는 외부로 호출하면 안된다.
+
 
 		//hibernate5Module.configure(Hibernate5Module.Feature.FORCE_LAZY_LOADING, true);
 		//Json 호출하는 시점에 Lazy 로딩을 해버림 -> 데이터가 다나오게됨
