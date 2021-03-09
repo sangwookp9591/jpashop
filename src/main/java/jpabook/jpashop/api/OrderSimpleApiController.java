@@ -1,10 +1,12 @@
 package jpabook.jpashop.api;
 
-import jpabook.jpashop.Repository.OrderRepository;
-import jpabook.jpashop.Repository.OrderSearch;
+import jpabook.jpashop.repository.OrderRepository;
+import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryDto;
+import jpabook.jpashop.repository.order.simplequery.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +27,8 @@ import java.util.stream.Collectors;
 public class OrderSimpleApiController {
 
     private final OrderRepository orderRepository;
+
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
 
     @GetMapping("/api/v1/simple-orders")
@@ -90,5 +94,13 @@ public class OrderSimpleApiController {
                     .getAddress();//lazy  초기화
         }
 
+    }
+
+
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> orderV4(){
+        return orderSimpleQueryRepository.findOrderDtos();
+        //Repository에 findOrderDtos메서드가 있기때문에 SimpleOrderDto를 쓰게되면
+        // 의존관계가  Repository를 컨트롤러로 보는 이상한사태가 일어날 수 있어서 Dto를 새로 만든다.
     }
 }
