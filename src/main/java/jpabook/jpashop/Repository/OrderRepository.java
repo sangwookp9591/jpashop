@@ -113,6 +113,13 @@ public class OrderRepository {
     }
 
 
-
+    public List<Order> findAllWithMemberDelivery() {
+        //select절에서 다가져옴 한방쿼리로 order member delivery를 다들고옴.
+        //lazy proxy다 무시하고 진짜 값 다채워서 가져온다
+        return em.createQuery("select o from Order  o" +
+                        " join fetch o.member" +
+                        " join fetch o.delivery d"
+                , Order.class)
+                .getResultList();
     }
 }
