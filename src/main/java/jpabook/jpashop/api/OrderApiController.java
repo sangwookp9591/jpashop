@@ -114,6 +114,11 @@ public class OrderApiController {
         return orderQueryRepository.findOrderQueryDtos();
     }
 
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> orderV5(){ //order 객체를 두개뿌린것이기때문에 중복이다.
+        return orderQueryRepository.findAllByDto_optimization();
+    }
+
 
     @Getter // 자바에서 properties가 없다고 하는 에러가나오면 거의 getter setter 이다.
     static class OrderDto {
