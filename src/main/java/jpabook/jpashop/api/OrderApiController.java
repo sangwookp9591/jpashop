@@ -6,6 +6,8 @@ import jpabook.jpashop.domain.OrderItem;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import jpabook.jpashop.repository.order.query.OrderQueryDto;
+import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +47,8 @@ import static java.util.stream.Collectors.toList;
 public class OrderApiController {
 
     private final OrderRepository orderRepository;
+
+    private final OrderQueryRepository orderQueryRepository;
     /**
      * V1. 엔티티 직접 노출
      * - Hibernate5Module 모듈 등록, LAZY=null 처리
@@ -84,6 +88,9 @@ public class OrderApiController {
 
     }//order가 2개가 나온다 데이터가 뻥튀기된다.
 
+
+
+
     /**
      * V3.1 엔티티를 조회해서 DTO로 변환 페이징 고려
      * - ToOne 관계만 우선 모두 페치 조인으로 최적화
@@ -100,6 +107,13 @@ public class OrderApiController {
         return result;
 
     }
+
+
+    @GetMapping("/api/v4/orders")
+    public List<OrderQueryDto> orderV4(){ //order 객체를 두개뿌린것이기때문에 중복이다.
+        return orderQueryRepository.findOrderQueryDtos();
+    }
+
 
     @Getter // 자바에서 properties가 없다고 하는 에러가나오면 거의 getter setter 이다.
     static class OrderDto {
@@ -139,4 +153,5 @@ public class OrderApiController {
             count = orderItem.getCount();
         }
     }
+
 }
