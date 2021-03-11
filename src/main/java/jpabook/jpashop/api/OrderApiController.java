@@ -11,11 +11,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * V1. 엔티티 직접 노출
@@ -64,7 +67,7 @@ public class OrderApiController {
     public List<OrderDto> orderV2(){
         List<Order> orders = orderRepository.findAllByCriteria(new OrderSearch());
         List<OrderDto> result = orders.stream().map(o -> new OrderDto(o))
-                .collect(Collectors.toList());
+                .collect(toList());
         return result;
     }
 
@@ -76,22 +79,27 @@ public class OrderApiController {
             System.out.println("order ref = " + order+"id ="+order.getId());
         }
         List<OrderDto> result = orders.stream().map(o -> new OrderDto(o))
-                .collect(Collectors.toList());
+                .collect(toList());
         return result;
 
     }//order가 2개가 나온다 데이터가 뻥튀기된다.
 
+    /**
+     * V3.1 엔티티를 조회해서 DTO로 변환 페이징 고려
+     * - ToOne 관계만 우선 모두 페치 조인으로 최적화
+     * - 컬렉션 관계는 hibernate.default_batch_fetch_size, @BatchSize로 최적화
+     */
     @GetMapping("/api/v3.1/orders")
-    public List<OrderDto> orderV3_page(){
-        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+    public List<OrderDto> ordersV3_page(@RequestParam(value = "offset",defaultValue = "0")
+                                                int offset,@RequestParam(value = "limit", defaultValue= "100") int limit) {
 
+        List<Order> orders = orderRepository.findAllWithMemberDelivery(offset,limit);
         List<OrderDto> result = orders.stream()
                 .map(o -> new OrderDto(o))
-                .collect(Collectors.toList());
+                .collect(toList());
         return result;
 
     }
-
 
     @Getter // 자바에서 properties가 없다고 하는 에러가나오면 거의 getter setter 이다.
     static class OrderDto {
@@ -113,7 +121,7 @@ public class OrderApiController {
             // DTO안에는 Entity가 있으면 안된다 Enity와의 의존을 아에 끊어야한다.
             orderItems = order.getOrderItems().stream()
                     .map(orderItem -> new OrderItemDto(orderItem))
-                    .collect(Collectors.toList());
+                    .collect(toList());
 
         }
 

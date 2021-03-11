@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.aspectj.weaver.ast.Or;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Order {
     @JoinColumn(name = "member_id")//외래키 이름이 member_id가 된다.
     private Member member;
 
+    @BatchSize(size =1000)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     //casecade orderitems에다가 데이터를 넣어두고 저장하면 order까지 같이 저장된다.
     private List<OrderItem> orderItems = new ArrayList<>();

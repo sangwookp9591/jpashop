@@ -14,6 +14,7 @@ spring:
       ddl-auto: create  #자동으로 테이블을 만들어줌. application 실행시점에 내가 가지고 있는 entity정보를 지우고 다시 생성
     properties:
       hibernate:
+        default_batch_fetch_size: 1000
         # show_sql: true
         format_sql: true
         #이런 속성들은 spring boot 공홈에서 찾아서 공부해야한다.

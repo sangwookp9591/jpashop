@@ -122,6 +122,17 @@ public class OrderRepository {
                 .getResultList();
     }
 
+        public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+            return em.createQuery(
+                    "select o from Order o" +
+                            " join fetch o.member m" +
+                            " join fetch o.delivery d", Order.class)
+                    .setFirstResult(offset)
+                    .setMaxResults(limit)
+                    .getResultList();
+        }
+
+
 
     public List<Order> findAllWithItem() {
         return em.createQuery("select distinct o from Order o " +
@@ -130,7 +141,9 @@ public class OrderRepository {
                 "join fetch o.orderItems oi " +
                 "join fetch oi.item i", Order.class).getResultList();
     }
-        //distinct를 걸어주면 DB distinct이외에 한가지를 더해준다.
-        //order의 id가 중복된 것이있으면 중복을 제거해준다.
-   // }
+    //distinct를 걸어주면 DB distinct이외에 한가지를 더해준다.
+    //order의 id가 중복된 것이있으면 중복을 제거해준다.
+    // }
+
+
 }
