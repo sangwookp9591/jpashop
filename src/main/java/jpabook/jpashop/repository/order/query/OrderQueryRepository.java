@@ -18,6 +18,7 @@ public class OrderQueryRepository {
     //그리고 findOrderQueryDtos가 만드는 거니깐 OrderQueryDto가 알아야해서 같은 패키지에 넣음
 
 
+    //V4
 //2
     public List<OrderQueryDto> findOrderQueryDtos() {
 
@@ -31,7 +32,7 @@ public class OrderQueryRepository {
         return result;
 
     }
-//3
+//3 //V4
     //일대다 이기 때문에 '다' 부분은 따로 해결할 수 없기때문에 쿼리를 다시짜야한다.
     private List<OrderItemQueryDto> findOrderItemMap(Long orderId) {
         return em.createQuery("select new jpabook.jpashop.repository.order.query.OrderItemQueryDto(oi.order.id,i.name,oi.orderPrice,oi.count) " +
@@ -41,7 +42,7 @@ public class OrderQueryRepository {
                 .setParameter("orderId",orderId)
                 .getResultList();
     }
-//1
+//1 //V4
     private List<OrderQueryDto> findOrders() {
         return em.createQuery(
                  "select new jpabook.jpashop.repository.order.query.OrderQueryDto(o.id,m.name,o.orderDate,o.status,d.address)" +
@@ -52,6 +53,8 @@ public class OrderQueryRepository {
         //당장 이쿼리를짤땐 , List<OrderItemQueryDto> orderItems 를빼야한다 jpql를 짜더라도 바로 collection을 넣을 수는 없다.
     }
 
+    //V5
+    //리펙토링 후
     public List<OrderQueryDto> findAllByDto_optimization() {
         //Query 발생
         List<OrderQueryDto> result = findOrders();//이전꺼 단점이 루프를 도는데 한방에 가져올것이다.
@@ -63,7 +66,7 @@ public class OrderQueryRepository {
 
         return result;
     }
-
+    //V5
     private Map<Long, List<OrderItemQueryDto>> findOrderItemMap(List<Long> orderIds) {
         //Query 발생
         //여기서 뽑은 orderIds를 파라미터 인절에 바로 넣는다.
@@ -82,14 +85,13 @@ public class OrderQueryRepository {
         //orderItemQueryDto.getOrderId()를 기준으로해서 map으로 바꿀수가 있다.
         return orderItemMap;
     }
-
+    //V5
     private List<Long> toOrderIds(List<OrderQueryDto> result) {
         List<Long> orderIds = result.stream()
                 .map(o -> o.getOrderId()) //map으로 orderQueryDto를 orderId로 변환
                 .collect(Collectors.toList());
         return orderIds;
     }
-
     //리펙토링전
 //    public List<OrderQueryDto> findAllByDto_optimization() {
 //        //Query 발생
@@ -121,4 +123,21 @@ public class OrderQueryRepository {
 //
 //        return result;
 //    }
+
+
+    //v6
+
+    //이쿼리를 그대로실해아하면 중복을 포함해서 나갈수 밖에 없다.
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.order.query.OrderFlatDto(o.id,m.name,o.orderDate,o.status,d.address,i.name,oi.price,oi.count) " +
+                        "from Order o " +
+                        "join o.member m " +
+                        "join o.delivery d " +
+                        "join o.orderItems oi " +
+                        "join oi.item i",
+        OrderFlatDto.class)
+                .getResultList();
+    }
+
 }
