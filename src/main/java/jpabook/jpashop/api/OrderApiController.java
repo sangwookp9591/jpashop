@@ -69,11 +69,29 @@ public class OrderApiController {
     }
 
     @GetMapping("/api/v3/orders")
-    public List<OrderDto> orderV3(){
+    public List<OrderDto> orderV3(){ //order 객체를 두개뿌린것이기때문에 중복이다.
         List<Order> orders =orderRepository.findAllWithItem();
 
+        for (Order order :  orders){
+            System.out.println("order ref = " + order+"id ="+order.getId());
+        }
+        List<OrderDto> result = orders.stream().map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return result;
+
+    }//order가 2개가 나온다 데이터가 뻥튀기된다.
+
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> orderV3_page(){
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return result;
 
     }
+
 
     @Getter // 자바에서 properties가 없다고 하는 에러가나오면 거의 getter setter 이다.
     static class OrderDto {
