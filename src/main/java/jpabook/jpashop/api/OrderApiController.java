@@ -7,6 +7,7 @@ import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.repository.order.query.OrderFlatDto;
+import jpabook.jpashop.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
 import lombok.Data;
@@ -21,7 +22,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
+import static org.yaml.snakeyaml.nodes.NodeId.mapping;
 
 /**
  * V1. 엔티티 직접 노출
@@ -120,10 +123,26 @@ public class OrderApiController {
         return orderQueryRepository.findAllByDto_optimization();
     }
 
-    @GetMapping("/api/v6/orders")
-    public List<OrderFlatDto> orderV6(){ //order 객체를 두개뿌린것이기때문에 중복이다.
-        return orderQueryRepository.findAllByDto_flat();
-    }
+//    @GetMapping("/api/v6/orders")
+//public List<OrderQueryDto> ordersV6() {
+//    List<OrderFlatDto> flats = orderQueryRepository.findAllByDto_flat();
+//        List<OrderFlatDto> flats = orderQueryRepository.findAllByDto_flat();
+//        //복잡한 코드를 넣어야함 중복인 경우를 직접 거르면된다.
+//        //이 flats를 어떻게든 루프를 돌려서 orderQueryDto와 orderQueryItemDto로 발라내야함.
+//        return flats.stream()
+//                .collect(groupingBy(o -> new OrderQueryDto(o.getOrderId(),
+//                                o.getName(), o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+//                        mapping(o -> new OrderItemQueryDto(o.getOrderId(),
+//                                o.getItemName(), o.getOrderPrice(), o.getCount()), toList())
+//                )).entrySet().stream()
+//                .map(e -> new OrderQueryDto(e.getKey().getOrderId(),
+//                        e.getKey().getName(), e.getKey().getOrderDate(), e.getKey().getOrderStatus(),
+//                        e.getKey().getAddress(), e.getValue()))
+//                .collect(toList());
+//        return flats;
+//    }
+
+
 
     @Getter // 자바에서 properties가 없다고 하는 에러가나오면 거의 getter setter 이다.
     static class OrderDto {

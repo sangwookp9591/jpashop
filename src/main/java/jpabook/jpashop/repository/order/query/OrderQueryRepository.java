@@ -130,7 +130,8 @@ public class OrderQueryRepository {
     //이쿼리를 그대로실해아하면 중복을 포함해서 나갈수 밖에 없다.
     public List<OrderFlatDto> findAllByDto_flat() {
         return em.createQuery(
-                "select new jpabook.jpashop.repository.order.query.OrderFlatDto(o.id,m.name,o.orderDate,o.status,d.address,i.name,oi.price,oi.count) " +
+                "select new jpabook.jpashop.repository.order.query.OrderFlatDto(" +
+                        "o.id,m.name,o.orderDate,o.status,d.address,i.name,oi.orderPrice,oi.count) " +
                         "from Order o " +
                         "join o.member m " +
                         "join o.delivery d " +
