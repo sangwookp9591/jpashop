@@ -1,37 +1,13 @@
 package jpabook.jpashop.repository;
 
 import jpabook.jpashop.domain.Member;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
-@Repository
-@RequiredArgsConstructor//Autowired가 사용가는하다는 것은
-public class MemberRepository {
-    //@PersistenceContext
-    // 1. spring이 em 을만들어서 여기다가 주입해주게 된다.
-    //@Autowired
-    // 2.스프링 부트라서 @PersistenceContext를 안쓰고  @Autowired가 사용가능 하다.
-    private final EntityManager em;
-
-    public void save(Member member){
-        em.persist(member);
-    }
-
-    public Member findOne(Long id){
-        return em.find(Member.class,id);
-    }
-
-    public List<Member> findAll(){
-        return em.createQuery("select m from Member m", Member.class)
-                .getResultList(); //ctrl_alt_ n 합쳐서 인라인 만들기
-    }
-
-    public List<Member> findByName(String name){
-        return em.createQuery("select m from Member m where m.name =:name",Member.class)
-                .setParameter("name",name)
-                .getResultList();
-    }
- }
+public interface MemberRepository extends JpaRepository<Member,Long> {//JpaRepository<type,pk type>
+    //이걸 JPQL로 구현할 필요가없다. 시그니처를 보고 알아서 해결해준다.
+    //여기는 룰이있는데 findBy + Name을 하게되면
+    //select m from Member m where m.name = ? 이라고 알아서 짜버린다. Name을보고 만들기 떄문에 name이 중요하다
+    List<Member> findByName(String name);
+}

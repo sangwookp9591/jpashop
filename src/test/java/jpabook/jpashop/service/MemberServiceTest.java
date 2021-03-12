@@ -1,6 +1,6 @@
 package jpabook.jpashop.service;
 
-import jpabook.jpashop.repository.MemberRepository;
+import jpabook.jpashop.repository.MemberRepositoryOld;
 import jpabook.jpashop.domain.Member;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +20,8 @@ import static org.junit.Assert.*;
 public class MemberServiceTest {
 
     @Autowired MemberService memberService;
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    MemberRepositoryOld memberRepository;
     @Autowired EntityManager em;//query나가는 것을 보고싶을 경우(2) -> flush를 사용해 insert되는것만 확인하고 종료시 롤백한다.
 
     @Test

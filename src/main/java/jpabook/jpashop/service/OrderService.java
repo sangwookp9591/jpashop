@@ -1,7 +1,7 @@
 package jpabook.jpashop.service;
 
 import jpabook.jpashop.repository.ItemRepository;
-import jpabook.jpashop.repository.MemberRepository;
+import jpabook.jpashop.repository.MemberRepositoryOld;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
 import jpabook.jpashop.domain.Delivery;
@@ -22,7 +22,7 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryOld memberRepository;
 
     private final ItemRepository itemRepository;
     /*

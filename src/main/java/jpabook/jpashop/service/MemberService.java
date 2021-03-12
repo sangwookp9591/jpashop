@@ -1,6 +1,7 @@
 package jpabook.jpashop.service;
 
 import jpabook.jpashop.repository.MemberRepository;
+import jpabook.jpashop.repository.MemberRepositoryOld;
 import jpabook.jpashop.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class MemberService {
   //  @Autowired
  //   private MemberRepository memberRepository;
 
+    private final MemberRepository memberRepository;
     //setter injection
     //메서드로 주입하기 때문에 가짜 memberRepository를 주입할수 있음
     //단점 -> runtime(실제 application 돌아가는 시점에)에 누군가 이걸 변경 할 수 있음.
@@ -36,7 +38,7 @@ public class MemberService {
 
     //lombok
 
-    private final MemberRepository memberRepository;
+    private final MemberRepositoryOld emberRepositoryOld;
 
 
     //회원 가입
@@ -61,14 +63,14 @@ public class MemberService {
     }
 
     //회원 단건 조회
-    public Member findOne(Long id){
-        return memberRepository.findOne(id);
+    public Member findOne(Long memberId){
+        return memberRepository.findById(memberId).get();
     }
 
 
     @Transactional
     public void update(Long id, String name) {
-        Member member = memberRepository.findOne(id);
+        Member member = memberRepository.findById(id).get();
         member.setName(name);
 
     }
