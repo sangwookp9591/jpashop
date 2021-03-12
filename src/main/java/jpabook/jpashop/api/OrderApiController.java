@@ -10,6 +10,7 @@ import jpabook.jpashop.repository.order.query.OrderFlatDto;
 import jpabook.jpashop.repository.order.query.OrderItemQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryDto;
 import jpabook.jpashop.repository.order.query.OrderQueryRepository;
+import jpabook.jpashop.service.query.OrderQueryService;
 import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +79,13 @@ public class OrderApiController {
                 .collect(toList());
         return result;
     }
+
+//    private final OrderQueryService orderQueryService;
+//    @GetMapping("/api/v3/orders")
+//    public List<OrderDto> orderV3(){ //order 객체를 두개뿌린것이기때문에 중복이다.
+//        return orderQueryService.orderV3();
+//
+//    }
 
     @GetMapping("/api/v3/orders")
     public List<OrderDto> orderV3(){ //order 객체를 두개뿌린것이기때문에 중복이다.
@@ -165,7 +173,6 @@ public class OrderApiController {
             orderItems = order.getOrderItems().stream()
                     .map(orderItem -> new OrderItemDto(orderItem))
                     .collect(toList());
-
         }
 
     }

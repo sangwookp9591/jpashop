@@ -32,6 +32,7 @@ public class OrderQueryRepository {
         return result;
 
     }
+
 //3 //V4
     //일대다 이기 때문에 '다' 부분은 따로 해결할 수 없기때문에 쿼리를 다시짜야한다.
     private List<OrderItemQueryDto> findOrderItemMap(Long orderId) {
@@ -42,6 +43,7 @@ public class OrderQueryRepository {
                 .setParameter("orderId",orderId)
                 .getResultList();
     }
+
 //1 //V4
     private List<OrderQueryDto> findOrders() {
         return em.createQuery(
